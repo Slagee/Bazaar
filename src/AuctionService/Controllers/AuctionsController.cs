@@ -66,11 +66,9 @@ public class AuctionsController : ControllerBase
     {
         var auction = await _repo.GetAutcionEntityByIdAsync(id);
 
-        if (auction == null)
-            return NotFound();
+        if (auction == null) return NotFound();
 
-        if (auction.Seller != User.Identity.Name)
-            return Forbid();
+        if (auction.Seller != User.Identity.Name) return Forbid();
 
         auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make;
         auction.Item.Model = updateAuctionDto.Model ?? auction.Item.Model;
@@ -81,9 +79,10 @@ public class AuctionsController : ControllerBase
         await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
 
         var result = await _repo.SaveChangesAsync();
-        if (!result) return BadRequest("Problem while saving changes");
 
-        return Ok();
+        if (result) return Ok();
+
+        return BadRequest("Problem saving changes");
     }
 
     [Authorize]
