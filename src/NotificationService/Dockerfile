@@ -19,13 +19,14 @@ COPY tests/AuctionService.IntegrationTests/AuctionService.IntegrationTests.cspro
 RUN dotnet restore LazarBazaar.sln
 
 # Copy the app folders over
-COPY src/GatewayService src/GatewayService
+COPY src/NotificationService src/NotificationService
+COPY src/Contracts src/Contracts
 
-WORKDIR /app/src/GatewayService
+WORKDIR /app/src/NotificationService
 RUN dotnet publish -c Release -o /app/src/out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build /app/src/out .
-ENTRYPOINT [ "dotnet", "GatewayService.dll" ]
+ENTRYPOINT [ "dotnet", "NotificationService.dll" ]
