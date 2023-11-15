@@ -1,15 +1,15 @@
 'use client'
 
-import { useAuctionStore } from '@/hooks/useAuctionsStore'
-import { useBidStore } from '@/hooks/useBidStore'
-import { Auction, AuctionFinished, Bid } from '@/types'
+import { useBidStore } from '@/hooks/useBidStore';
+import { Auction, AuctionFinished, Bid } from '@/types';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
-import { User } from 'next-auth'
+import { User } from 'next-auth';
 import React, { ReactNode, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
-import AuctionCreatedToast from '../components/AuctionCreatedToast'
-import { getDetailedViewData } from '../actions/auctionAction'
-import AuctionFinishedToast from '../components/AuctionFinishedToast'
+import { toast } from 'react-hot-toast';
+import AuctionCreatedToast from '../components/AuctionCreatedToast';
+import AuctionFinishedToast from '../components/AuctionFinishedToast';
+import { useAuctionStore } from '@/hooks/useAuctionsStore';
+import { getDetailedViewData } from '../actions/auctionAction';
 
 type Props = {
     children: ReactNode
@@ -20,22 +20,23 @@ export default function SignalRProvider({ children, user }: Props) {
     const [connection, setConnection] = useState<HubConnection | null>(null)
     const setCurrentPrice = useAuctionStore(state => state.setCurrentPrice)
     const addBid = useBidStore(state => state.addBid)
+    const apiUrl = process.env.NODE_ENV === 'production'
+        ? 'https://api.lazarbazaar.com/notifications'
+        : process.env.NEXT_PUBLIC_NOTIFY_URL
 
     useEffect(() => {
         const newConnection = new HubConnectionBuilder()
-            .withUrl('http://localhost:6001/notifications')
+            .withUrl(apiUrl!)
             .withAutomaticReconnect()
-            .build()
+            .build();
 
         setConnection(newConnection);
-    }, [])
+    }, [apiUrl])
 
     useEffect(() => {
         if (connection) {
             connection.start()
                 .then(() => {
-                    console.log('Connected to notification hub')
-
                     connection.on('BidPlaced', (bid: Bid) => {
                         if (bid.bidStatus.includes('Accepted')) {
                             setCurrentPrice(bid.auctionId, bid.amount)
@@ -44,16 +45,21 @@ export default function SignalRProvider({ children, user }: Props) {
                     })
 
                     connection.on('AuctionCreated', (auction: Auction) => {
-                        if (user?.username == auction.seller) {
-                            return toast(<AuctionCreatedToast auction={auction} />, { duration: 5000 })
+                        if (user?.username !== auction.seller) {
+                            return toast(<AuctionCreatedToast auction={auction} />,
+                                { duration: 5000 })
                         }
                     })
 
-                    connection.on('AuctinoFinished', (finishedAuction: AuctionFinished) => {
+                    connection.on('AuctionFinished', (finishedAuction: AuctionFinished) => {
                         const auction = getDetailedViewData(finishedAuction.auctionId);
                         return toast.promise(auction, {
                             loading: 'Loading',
-                            success: (auction) => <AuctionFinishedToast finishedAuction={finishedAuction} auction={auction} />,
+                            success: (auction) =>
+                                <AuctionFinishedToast
+                                    finishedAuction={finishedAuction}
+                                    auction={auction}
+                                />,
                             error: () => 'Auction finished!'
                         }, { success: { duration: 5000, icon: null } })
                     })
@@ -63,7 +69,7 @@ export default function SignalRProvider({ children, user }: Props) {
         return () => {
             connection?.stop();
         }
-    }, [connection, setCurrentPrice])
+    }, [connection, setCurrentPrice, addBid, user?.username])
 
     return (
         children

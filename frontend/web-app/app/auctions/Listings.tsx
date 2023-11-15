@@ -9,6 +9,7 @@ import { useParamsStore } from '@/hooks/useParamsStore';
 import queryString from 'query-string';
 import EmptyFilter from '../components/EmptyFilter';
 import { useAuctionStore } from '@/hooks/useAuctionsStore';
+import { shallow } from 'zustand/shallow';
 
 export default function Listings() {
     const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ export default function Listings() {
         auctions: state.auctions,
         totalCount: state.totalCount,
         pageCount: state.pageCount
-    }));
+    }), shallow);
     const setData = useAuctionStore(state => state.setData);
     const setParams = useParamsStore(state => state.setParams);
     const url = queryString.stringifyUrl({ url: '', query: params })
@@ -39,7 +40,7 @@ export default function Listings() {
             setData(data)
             setLoading(false)
         })
-    }, [url])
+    }, [url, setData])
 
     if (loading) return <h3>Loading...</h3>
 
