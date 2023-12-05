@@ -1,3 +1,8 @@
 {
-  "dotnet.defaultSolution": "LazarBazaar.sln"
+  "dotnet.defaultSolution": "LazarBazaar.sln",
+  "vs-kubernetes": {
+    "disable-linters": [
+      "resource-limits"
+    ]
+  }
 }
