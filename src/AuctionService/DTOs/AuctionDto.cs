@@ -7,7 +7,7 @@ public class AuctionDto
     public string Seller { get; set; }
     public string Winner { get; set; }
     public int SoldAmount { get; set; }
-    public int CurrentHightBid { get; set; }
+    public int CurrentHighBid { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public DateTime AuctionEnd { get; set; }

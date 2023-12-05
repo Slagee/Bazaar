@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bids-svc
+spec:
+  selector:
+    matchLabels:
+      app: bids-svc
+  template:
+    metadata:
+      labels:
+        app: bids-svc
+    spec:
+      containers:
+        - name: bids-svc
+          image: slagee/bids-svc
+          imagePullPolicy: Never
+          env:
+            - name: RabbitMq__Host
+              value: rabbit-cluserip
+            - name: RabbitMq__Username
+              value: rabbit
+            - name: RabbitMq__Password
+              value: rabbit
+            - name: ConnectionStrings__BidDbConnection
+              value: mongodb://root:mongopw@mongo-cluserip
+            - name: IdentityServiceUrl
+              value: https://id.lazarbazaar.eu
+            - name: GrpcAuction
+              value: http://auction-clusterip:7777
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bids-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: bids-svc
+  ports:
+    - port: 80
+      targetPort: 80
