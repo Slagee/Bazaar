@@ -8,11 +8,11 @@ import { FieldValues, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 type Props = {
-    auctinoId: string
+    auctionId: string
     highBid: number
 }
 
-export default function BidForm({ auctinoId, highBid }: Props) {
+export default function BidForm({ auctionId, highBid }: Props) {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const addBid = useBidStore(state => state.addBid)
 
@@ -22,7 +22,7 @@ export default function BidForm({ auctinoId, highBid }: Props) {
             return toast.error('Bid must be at least $' + numberWithCommas(highBid + 1))
         }
 
-        placeBidForAuction(auctinoId, +data.amount).then(bid => {
+        placeBidForAuction(auctionId, +data.amount).then(bid => {
             if (bid.error) throw bid.error;
             addBid(bid);
             reset();

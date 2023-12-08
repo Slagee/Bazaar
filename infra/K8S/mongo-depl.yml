@@ -32,7 +32,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-cluserip
+  name: mongo-clusterip
 spec:
   type: ClusterIP
   selector:

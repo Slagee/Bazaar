@@ -79,7 +79,7 @@ export default function BidList({ user, auction }: Props) {
                         You cannot bid on your own auction
                     </div>
                 ) : (
-                    <BidForm auctinoId={auction.id} highBid={highBid} />
+                    <BidForm auctionId={auction.id} highBid={highBid} />
                 )}
             </div>
         </div>

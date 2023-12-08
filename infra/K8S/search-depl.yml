@@ -17,15 +17,15 @@ spec:
           imagePullPolicy: Never
           env:
             - name: RabbitMq__Host
-              value: rabbit-cluserip
+              value: rabbit-clusterip
             - name: RabbitMq__Username
               value: rabbit
             - name: RabbitMq__Password
               value: rabbit
             - name: ConnectionStrings__MongoDbConnection
-              value: mongodb://root:mongopw@mongo-cluserip
+              value: mongodb://root:mongopw@mongo-clusterip
             - name: AuctionServiceUrl
-              value: http://auction-svc
+              value: http://auction-clusterip
 ---
 apiVersion: v1
 kind: Service

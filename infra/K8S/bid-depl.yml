@@ -17,13 +17,13 @@ spec:
           imagePullPolicy: Never
           env:
             - name: RabbitMq__Host
-              value: rabbit-cluserip
+              value: rabbit-clusterip
             - name: RabbitMq__Username
               value: rabbit
             - name: RabbitMq__Password
               value: rabbit
             - name: ConnectionStrings__BidDbConnection
-              value: mongodb://root:mongopw@mongo-cluserip
+              value: mongodb://root:mongopw@mongo-clusterip
             - name: IdentityServiceUrl
               value: https://id.lazarbazaar.eu
             - name: GrpcAuction
