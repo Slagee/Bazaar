@@ -34,6 +34,11 @@ internal static class HostingExtensions
                     options.IssuerUri = "identity-svc";
                 }
 
+                if (builder.Environment.IsProduction())
+                {
+                    options.IssuerUri = "https://id.lazarbazaar.eu";
+                }
+
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 // options.EmitStaticAudienceClaim = true;
             })

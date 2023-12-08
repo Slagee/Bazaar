@@ -18,6 +18,8 @@ spec:
           env:
             - name: ClientApp
               value: https://app.lazarbazaar.com
+            - name: IdentityServiceUrl
+              value: https://id.lazarbazaar.eu
 ---
 apiVersion: v1
 kind: Service

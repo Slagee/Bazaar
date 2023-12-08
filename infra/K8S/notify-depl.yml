@@ -17,7 +17,7 @@ spec:
           imagePullPolicy: Never
           env:
             - name: RabbitMq__Host
-              value: rabbit-cluserip
+              value: rabbit-clusterip
             - name: RabbitMq__Username
               value: rabbit
             - name: RabbitMq__Password

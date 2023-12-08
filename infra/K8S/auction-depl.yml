@@ -17,13 +17,13 @@ spec:
           imagePullPolicy: Never
           env:
             - name: RabbitMq__Host
-              value: rabbit-cluserip
+              value: rabbit-clusterip
             - name: RabbitMq__Username
               value: rabbit
             - name: RabbitMq__Password
               value: rabbit
             - name: ConnectionStrings__DefaultConnection
-              value: Server=postgres-cluserip:5432;User Id=postgres;Password=postgrespw;Database=auctions
+              value: Server=postgres-clusterip:5432;User Id=postgres;Password=postgrespw;Database=auctions
             - name: IdentityServiceUrl
               value: https://id.lazarbazaar.eu
             - name: Kestrel__Endpoints__Grpc__Protocols
