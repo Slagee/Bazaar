@@ -36,7 +36,7 @@ internal static class HostingExtensions
 
                 if (builder.Environment.IsProduction())
                 {
-                    options.IssuerUri = "https://id.lazarbazaar.eu";
+                    options.IssuerUri = "https://identitylazar.site";
                 }
 
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
@@ -75,7 +75,7 @@ internal static class HostingExtensions
             app.Use(async (ctx, next) =>
                     {
                         var serverUrls = ctx.RequestServices.GetRequiredService<IServerUrls>();
-                        serverUrls.Origin = serverUrls.Origin = "https://id.lazarbazaar.eu";
+                        serverUrls.Origin = serverUrls.Origin = "https://identitylazar.site";
                         await next();
                     });
         }
